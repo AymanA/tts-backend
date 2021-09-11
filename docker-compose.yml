@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres
+#    Because we did not specify a username, the database username will be "postgres"
+    container_name: postgresdb
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB:
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+#   The port specified on the left of the colon is the port on the computer. The port specified on the right is the port in the container.
+      - '5431:5432'
+
+  laravel-backend:
+    container_name: laravel-backend
+    build:
+      context: ./backend
+    ports:
+      - '8080:8000'
+    volumes:
+      - ./src:/var/www/laravel_docker
+      - ./apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
+    depends_on:
+      - database
