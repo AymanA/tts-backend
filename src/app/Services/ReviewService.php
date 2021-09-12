@@ -20,17 +20,7 @@ class ReviewService implements ReviewServiceInterface
     {
         $days = $this->calculateDateRange($from, $to);
         $format = $this->getGroupFormat($days);
-        //todo get from repository
-        $result = Review::selectRaw('count(score) review_count, ROUND(AVG(score),2) average_score, created_date, name ')
-            ->join('hotels', 'hotels.id', 'reviews.hotel_id')
-            ->whereBetween('created_date', [$from, $to])
-            ->where('hotel_id', $hotel->id)
-            ->groupBy(['created_date','hotels.id'])
-            ->get()
-            ->groupBy(function ($val) use($format){
-                return Carbon::parse($val->created_date)->format($format);
-            });
-        return $result;
+        return $this->reviewRepository->getHotelReviews($hotel->id, $from, $to, $format);
     }
 
     public function calculateDateRange($from, $to) {
