@@ -5,3 +5,7 @@
 `
 docker-compose exec laravel-backend /bin/bash
 `
+## to seed db
+`
+php artisan migrate:fresh --seed
+`
