@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Repositories\BaseRepository;
+use App\Repositories\Interfaces\BaseRepositoryInterface;
+use App\Repositories\Interfaces\ReviewRepositoryInterface;
+use App\Repositories\ReviewRepository;
+use App\Services\ReviewService;
+use App\Services\Interfaces\ReviewServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(ReviewServiceInterface::class, ReviewService::class);
     }
 
     /**
@@ -23,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app->bind(BaseRepositoryInterface::class, BaseRepository::class);
+        $this->app->bind(ReviewRepositoryInterface::class, ReviewRepository::class);
     }
 }

@@ -24,7 +24,7 @@ class ReviewFactory extends Factory
     {
         return [
             'hotel_id' => Hotel::inRandomOrder()->first(),
-            'score' => $this->faker->randomFloat(2, 0, 10),
+            'score' => $this->faker->randomFloat(2, 0, 100),
             'comment' => $this->faker->text(),
             'created_date' => $this->faker->dateTimeBetween('-2 years', 'now')
         ];
