@@ -4,8 +4,6 @@ namespace App\Services;
 
 use App\Repositories\Interfaces\ReviewRepositoryInterface;
 use App\Services\Interfaces\ReviewServiceInterface;
-use App\Models\Review;
-use Carbon\Carbon;
 
 class ReviewService implements ReviewServiceInterface
 {
