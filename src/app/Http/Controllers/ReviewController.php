@@ -25,7 +25,10 @@ class ReviewController extends BaseController
 //                ReviewResource::collection($reviews)
             ]);
         } else {
-            return $this->errorResponse(500, 'Failed to get hotel reviews please try again later');
+            return $this->successResponse([
+                'message' => 'No Reviews',
+                'data' => []
+            ]);
         }
     }
 
