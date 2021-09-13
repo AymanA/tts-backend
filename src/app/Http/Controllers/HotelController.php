@@ -3,18 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hotel;
+use App\Services\Interfaces\HotelServiceInterface;
+use App\Transformers\HotelResource;
 use Illuminate\Http\Request;
 
-class HotelController extends Controller
+class HotelController extends BaseController
 {
+    private $hotelService;
+
+    public function __construct(HotelServiceInterface $hotelService)
+    {
+        $this->hotelService = $hotelService;
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $hotels = $this->hotelService->getHotels();
+        return $this->successResponse([
+            'data' => HotelResource::collection($hotels)
+        ]);
     }
 
     /**

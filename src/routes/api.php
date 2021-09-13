@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\HotelController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,5 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => '/v1'], function () {
+    Route::get('hotels/', [HotelController::class, 'index']);
     Route::get('reviews/{hotel}', [ReviewController::class, 'getHotelReview']);
 });
