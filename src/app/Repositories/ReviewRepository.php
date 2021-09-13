@@ -29,7 +29,7 @@ class ReviewRepository extends BaseRepository implements ReviewRepositoryInterfa
                 return [
                     'average-score' => $rows->avg('score'),
                     'review-count' => $rows->count(),
-                    'date-range' => Carbon::parse($rows[0]->created_date)->format($format)
+                    'date-group' => Carbon::parse($rows[0]->created_date)->format($format)
                 ];
             });
     }
