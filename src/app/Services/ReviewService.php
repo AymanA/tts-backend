@@ -16,12 +16,18 @@ class ReviewService implements ReviewServiceInterface
 
     public function getHotelReview($hotel, $from, $to)
     {
+        $reviews = [];
         $days = $this->calculateDateRange($from, $to);
         $format = $this->getGroupFormat($days);
-        return $this->reviewRepository->getHotelReviews($hotel->id, $from, $to, $format);
+        $result = $this->reviewRepository->getHotelReviews($hotel->id, $from, $to, $format);
+        foreach ($result as $key => $value) {
+            $reviews[] = $value;
+        };
+        return $reviews;
     }
 
-    public function calculateDateRange($from, $to) {
+    public function calculateDateRange($from, $to)
+    {
         return (int)((strtotime($to) - strtotime($from)) / (3600 * 24));
     }
 

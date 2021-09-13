@@ -6,6 +6,7 @@ namespace App\Repositories;
 use App\Models\Review;
 use App\Repositories\Interfaces\ReviewRepositoryInterface;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 
 class ReviewRepository extends BaseRepository implements ReviewRepositoryInterface
 {
@@ -16,17 +17,20 @@ class ReviewRepository extends BaseRepository implements ReviewRepositoryInterfa
 
     public function getHotelReviews($hotel_id, $from, $to, $format)
     {
-        $results = [];
-        $this->model->selectRaw('count(score) review_count, ROUND(AVG(score),2) average_score, created_date, name ')
+
+        return $this->model
             ->join('hotels', 'hotels.id', 'reviews.hotel_id')
             ->whereBetween('created_date', [$from, $to])
             ->where('hotel_id', $hotel_id)
-            ->groupBy(['created_date', 'hotels.id'])
             ->get()
-            ->groupBy(function ($val,$group) use (&$results,$format) {
-                $val->date_group = Carbon::parse($val->created_date)->format($format);
-                array_push($results,$val);
+            ->groupBy(function ($val) use (&$results, $format) {
+                return Carbon::parse($val->created_date)->format($format);
+            })->map(function (Collection $rows) use ($format) {
+                return [
+                    'average-score' => $rows->avg('score'),
+                    'review-count' => $rows->count(),
+                    'date-range' => Carbon::parse($rows[0]->created_date)->format($format)
+                ];
             });
-        return $results;
     }
 }

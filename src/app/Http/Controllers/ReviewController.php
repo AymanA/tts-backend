@@ -21,8 +21,8 @@ class ReviewController extends BaseController
         $reviews = $this->reviewService->getHotelReview($hotel, $request->from, $request->to);
         if($reviews){
             return $this->successResponse([
-                'data' =>
-                ReviewResource::collection($reviews)
+                'data' => $reviews
+//                ReviewResource::collection($reviews)
             ]);
         } else {
             return $this->errorResponse(500, 'Failed to get hotel reviews please try again later');
